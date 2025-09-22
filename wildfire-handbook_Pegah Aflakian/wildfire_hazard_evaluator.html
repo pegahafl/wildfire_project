@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Wildfire Hazard Evaluator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+    button {
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #023e8a;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .very-low { background: #a6e3f2; color: #004f5d; }
+    .low { background: #a8e6a3; color: #215c24; }
+    .medium { background: #f9f29d; color: #665c00; }
+    .high { background: #f7b267; color: #8b4c00; }
+    .very-high { background: #f26c6c; color: #800000; }
+    .extreme { background: #e15ce1; color: #660066; }
+  </style>
+</head>
+<body>
+
+<h1>🔥 Wildfire Hazard Evaluator</h1>
+
+<div class="container">
+  <label for="vegetation">Select Vegetation Type:</label>
+  <select id="vegetation">
+    <option value="grassland">Grassland (Low Intensity)</option>
+    <option value="broadleaf">Low Flammable Forest - Broadleaves (Medium Intensity)</option>
+    <option value="shrubland">Shrubland (High Intensity)</option>
+    <option value="coniferous">Highly Flammable Forest - Conifers (Very High Intensity)</option>
+  </select>
+
+  <label for="susceptibility">Select Susceptibility Level:</label>
+  <select id="susceptibility">
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select>
+
+  <button onclick="evaluateHazard()">Evaluate Hazard</button>
+
+  <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+  function evaluateHazard() {
+    const veg = document.getElementById("vegetation").value;
+    const susc = document.getElementById("susceptibility").value;
+    const resultBox = document.getElementById("result");
+
+    const matrix = {
+      "low": {
+        "grassland": {level: "Very Low", desc: "Low intensity surface fire with low likelihood", cls: "very-low"},
+        "broadleaf": {level: "Low", desc: "Medium intensity forest fire with low likelihood", cls: "low"},
+        "shrubland": {level: "Medium", desc: "High intensity bushfire with low likelihood", cls: "medium"},
+        "coniferous": {level: "High", desc: "High intensity forest fire with low likelihood", cls: "high"}
+      },
+      "medium": {
+        "grassland": {level: "Low", desc: "Low intensity surface fire with medium likelihood", cls: "low"},
+        "broadleaf": {level: "Medium", desc: "Medium intensity forest fire with medium likelihood", cls: "medium"},
+        "shrubland": {level: "High", desc: "High intensity bushfire with medium likelihood", cls: "high"},
+        "coniferous": {level: "Very High", desc: "High intensity forest fire with medium likelihood", cls: "very-high"}
+      },
+      "high": {
+        "grassland": {level: "Medium", desc: "Low intensity surface fire with high likelihood", cls: "medium"},
+        "broadleaf": {level: "High", desc: "Medium intensity forest fire with high likelihood", cls: "high"},
+        "shrubland": {level: "Very High", desc: "High intensity bushfire with high likelihood", cls: "very-high"},
+        "coniferous": {level: "Extreme", desc: "High intensity forest fire with high likelihood", cls: "extreme"}
+      }
+    };
+
+    const output = matrix[susc][veg];
+
+    resultBox.innerHTML = `<strong>Hazard Level:</strong> ${output.level}<br>
+    <strong>Description:</strong> ${output.desc}`;
+    resultBox.className = `result ${output.cls}`;
+    resultBox.style.display = "block";
+  }
+</script>
+
+</body>
+</html>

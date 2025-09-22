@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Wildfire Sections</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; /* allow stacking */
+      perspective: 1000px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* 🎬 Background video */
+    video.bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* 🔥 Sparks effect */
+    .sparks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .spark {
+      position: absolute;
+      bottom: 0;
+      width: 4px;
+      height: 4px;
+      background: orange;
+      border-radius: 50%;
+      animation: rise 4s linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(0.2); opacity: 0; }
+    }
+
+    .scene {
+      width: 300px;
+      height: 70px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease-out;
+      z-index: 1;
+      margin-top: 100px;
+    }
+
+    .carousel {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 1s;
+    }
+
+    .carousel div {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255,100,0,0.8);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .carousel div:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255,150,50,1);
+    }
+
+    /* 👇 Hexagon layout (6 panels around) */
+    .carousel div:nth-child(1) { transform: rotateY(0deg) translateZ(500px); }
+    .carousel div:nth-child(2) { transform: rotateY(60deg) translateZ(500px); }
+    .carousel div:nth-child(3) { transform: rotateY(120deg) translateZ(500px); }
+    .carousel div:nth-child(4) { transform: rotateY(180deg) translateZ(500px); }
+    .carousel div:nth-child(5) { transform: rotateY(240deg) translateZ(500px); }
+    .carousel div:nth-child(6) { transform: rotateY(300deg) translateZ(500px); }
+
+    /* 🌐 Big horizontal panel (7th) */
+    .big-panel {
+      margin-top: 280px;
+      width: 90%;
+      height: 100px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.4rem;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(255,120,0,0.9);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      z-index: 1;
+    }
+    .big-panel:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 35px rgba(255,160,60,1);
+    }
+
+    /* 📚 References popup */
+    #refsPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 70%;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 20px;
+      overflow-y: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,120,0,0.8);
+      z-index: 2000;
+    }
+    #refsPopup h2, #refsPopup h3 { margin-top: 0; }
+    #refsPopup a { color: #ffcc00; text-decoration: none; }
+
+    /* 🎥 Video source text */
+    .video-source {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: #fff;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 6px;
+      z-index: 2;
+    }
+    .video-source a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🎬 Background video -->
+  <video class="bg-video" autoplay loop muted playsinline id="bgVideo">
+    <source src="assets/videos/video.mp4" type="video/mp4">
+  </video>
+
+  <!-- 🔊 Sound button -->
+  <button id="soundBtn" style="
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1000;
+  ">
+  🔊 Enable Sound
+  </button>
+
+<!-- 📚 References button -->
+<button id="refsBtn" style="
+  position: fixed;
+  bottom: 10px;       /* distance from bottom edge */
+  left: 50%;          /* center horizontally */
+  transform: translateX(-50%); /* perfect centering */
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1500;      /* higher than other buttons */
+">
+📚 References
+</button>
+
+  <!-- 📚 References popup -->
+  <div id="refsPopup">
+    <h2>📚 References</h2>
+    <h3>Scientific and Official Sources</h3>
+    <ul>
+      <li><a href="https://doi.org/10.3389/ffgc.2020.553116" target="_blank">Tedim, F., & Leone, V. (2020). The dilemma of wildfire definition...</a></li>
+      <li><a href="https://doi.org/10.1371/journal.pone.0005102" target="_blank">Krawchuk, M. A., et al. (2009). Global pyrogeography...</a></li>
+      <li><a href="https://dnr.wa.gov/sites/default/files/2025-03/rp_fire_how_to_prepare_wildfire.pdf" target="_blank">Washington State DNR (2025). How to prepare for wildfire.</a></li>
+      <li><a href="https://www.britannica.com/science/wildfire" target="_blank">Britannica. (n.d.). Wildfire.</a></li>
+      <li><a href="https://www.plt.org/educator-tips/wildfires-causes-effects-educational-activities" target="_blank">Project Learning Tree. (n.d.). Wildfires: Causes, effects...</a></li>
+    </ul>
+
+    <h3>Practical and Educational Resources</h3>
+    <ul>
+      <li><a href="https://www.mercurynews.com/2018/08/02/hiking-near-wildfire-zones-what-to-know-before-dashing-up-that-trail/" target="_blank">Mercury News (2018). Hiking near wildfire zones...</a></li>
+      <li><a href="https://www.outsideonline.com/2321201/how-escape-wildfire-when-youre-hiking" target="_blank">Outside Online (2018). How to escape wildfire...</a></li>
+      <li><a href="https://www.backpacker.com/survival/den-mother-forest-fire" target="_blank">Backpacker. (n.d.). Den Mother: Forest fire survival tips.</a></li>
+      <li><a href="https://www.survivalsullivan.com/how-to-survive-a-wildfire/" target="_blank">Survival Sullivan. (n.d.). How to survive a wildfire.</a></li>
+      <li><a href="https://www.artofmanliness.com/articles/how-to-survive-a-wildfire/" target="_blank">Art of Manliness. (n.d.). How to survive a wildfire.</a></li>
+      <li><a href="https://northerncaliforniahikingtrails.com/blog/2018/07/28/surviving-wildfire-hiking-what-to-do/" target="_blank">Northern California Hiking Trails (2018). Surviving wildfire hiking.</a></li>
+      <li><a href="https://www.pcta.org/discover-the-trail/backcountry-basics/fire/how-to-react-to-wildfires/" target="_blank">PCTA. (n.d.). How to react to wildfires.</a></li>
+      <li><a href="https://camping.onetigris.com/blogs/news/how-to-survive-a-forest-fire" target="_blank">OneTigris. (n.d.). How to survive a forest fire.</a></li>
+      <li><a href="https://eden-plus.org/2024/08/13/understanding-wildfires" target="_blank">Eden Plus (2024). Understanding wildfires.</a></li>
+    </ul>
+
+    <button id="closeRefs" style="
+      margin-top: 15px;
+      padding: 8px 15px;
+      background: rgba(255,50,0,0.8);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    ">Close</button>
+  </div>
+
+  <!-- 🔥 Sparks -->
+  <div class="sparks" id="sparks"></div>
+
+  <!-- 🎮 Main scene -->
+  <div class="scene" id="scene">
+    <div class="carousel" id="carousel">
+      <div data-link="section0.html">🔥 What are Wildfires?</div>
+      <div data-link="section1.html">🔥 How Wildfire Spread?</div>
+      <div data-link="section2.html">🔥 What Are Wildfire Stages?</div>
+      <div data-link="section3.html">🔥 When Wildfires Accure?</div>
+      <div data-link="section4.html">🔥 What Is The Wildfire Risk?</div>
+      <div data-link="section5.html">🔥 What Are Wildfires Impacts?</div>
+    </div>
+  </div>
+
+  <!-- 🌐 Big horizontal panel -->
+  <div class="big-panel" data-link="section6.html">
+    🔥 What Should We Do If Caught in a Wildfire?
+  </div>
+
+  <!-- 🎥 Video source -->
+  <div class="video-source">
+    🎥 Source: 
+    <a href="https://www.youtube.com/watch?v=RJettD7enNc" target="_blank">YouTube</a>
+  </div>
+
+  <script>
+    const bgVideo = document.getElementById("bgVideo");
+    const soundBtn = document.getElementById("soundBtn");
+
+    soundBtn.addEventListener("click", () => {
+      bgVideo.muted = false;
+      bgVideo.play();
+      soundBtn.style.display = "none";
+    });
+
+    let angle = 0;
+    const carousel = document.getElementById("carousel");
+    const scene = document.getElementById("scene");
+
+    // Keyboard rotation (6 panels → 60° step)
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") angle -= 60;
+      else if (event.key === "ArrowLeft") angle += 60;
+      carousel.style.transform = `rotateY(${angle}deg)`;
+      sessionStorage.setItem("carouselAngle", angle);
+    });
+
+    // Click on carousel items
+    document.querySelectorAll(".carousel div").forEach(el => {
+      el.addEventListener("click", () => {
+        const link = el.getAttribute("data-link");
+        if (link) window.location.href = link;
+      });
+    });
+
+    // Click on big panel
+    document.querySelector(".big-panel").addEventListener("click", () => {
+      const link = document.querySelector(".big-panel").getAttribute("data-link");
+      if (link) window.location.href = link;
+    });
+
+    // Restore previous rotation angle
+    window.addEventListener("load", () => {
+      const savedAngle = sessionStorage.getItem("carouselAngle");
+      if (savedAngle) {
+        angle = parseFloat(savedAngle);
+        carousel.style.transform = `rotateY(${angle}deg)`;
+      }
+    });
+
+    // 🎥 Camera movement with mouse
+    document.addEventListener("mousemove", (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      scene.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+    });
+
+    // 🔥 Sparks creation
+    const sparks = document.getElementById("sparks");
+    function createSpark() {
+      const spark = document.createElement("div");
+      spark.classList.add("spark");
+      spark.style.left = Math.random() * window.innerWidth + "px";
+      spark.style.animationDuration = 3 + Math.random() * 2 + "s";
+      sparks.appendChild(spark);
+      setTimeout(() => spark.remove(), 5000);
+    }
+    setInterval(createSpark, 300);
+
+    // 📚 References popup logic
+    const refsBtn = document.getElementById("refsBtn");
+    const refsPopup = document.getElementById("refsPopup");
+    const closeRefs = document.getElementById("closeRefs");
+
+    refsBtn.addEventListener("click", () => {
+      refsPopup.style.display = "block";
+    });
+
+    closeRefs.addEventListener("click", () => {
+      refsPopup.style.display = "none";
+    });
+  </script>
+</body>
+</html>

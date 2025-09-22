@@ -1,0 +1,447 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff7f0;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+header {
+  background-color: #d35400;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: #ffe9d5;
+}
+
+/* ==== CARD SECTIONS ==== */
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #fff;
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-content {
+  flex: 1 1 60%;
+  padding-right: 2rem;
+}
+
+.card-chart {
+  flex: 1 1 35%;
+}
+
+h2 {
+  color: #c0392b;
+  margin-bottom: 1rem;
+}
+
+/* ==== FADE ANIMATION ==== */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn ease-in 1 forwards;
+  animation-duration: 0.7s;
+  margin-bottom: 1rem;
+}
+.fade-in.delay-1 { animation-delay: 0.3s; }
+.fade-in.delay-2 { animation-delay: 0.6s; }
+.fade-in.delay-3 { animation-delay: 0.9s; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==== ACCORDION ==== */
+.accordion {
+  max-width: 960px;
+  margin: 3rem auto;
+}
+.accordion-item {
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.accordion-header {
+  background: #fca311;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.3s;
+}
+.accordion-header:hover {
+  background: #e07b00;
+}
+.accordion-body {
+  display: none;
+  background: #fff;
+  padding: 1rem;
+}
+
+/* ==== SIMULATOR ==== */
+.simulator {
+  max-width: 960px;
+  margin: 3rem auto;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  background: #fff5eb;
+  border-radius: 6px;
+}
+
+/* ==== TWO-COLUMN LAYOUT ==== */
+.two-column {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.text-content {
+  flex: 1 1 60%;
+}
+
+.image-content {
+  flex: 1 1 35%;
+  text-align: right;
+}
+
+.illustration.triangle {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ==== TOP IMAGE STYLE ==== */
+.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.text-content {
+  flex: 1 1 60%;
+}
+
+.image-content {
+  flex: 1 1 35%;
+  text-align: center;
+}
+
+.illustration.top-img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  height: auto;
+}
+
+/* ==== LAYOUT ADJUSTMENTS ==== */
+.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.text-content {
+  flex: 1 1 60%;
+}
+
+.image-content {
+  flex: 1 1 35%;
+  text-align: center;
+}
+
+.illustration.top-img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  height: auto;
+}
+
+/* ==== BOTTOM IMAGE STYLE ==== */
+.illustration.bottom-img {
+  margin-top: 20px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==== CARD STYLE ==== */
+.card-section {
+  background: #fff7f0;
+  margin: 40px auto;
+  padding: 30px 20px;
+  border-radius: 14px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+}
+
+.card-content.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.text-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-content {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==== IFRAME STYLE ==== */
+.image-content iframe {
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+}
+
+.image-content iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+  border-radius: 10px;
+  border: none;
+}
+
+/* ==== TWO-COLUMN ADJUSTMENTS ==== */
+.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+}
+.text-content {
+  flex: 1 1 60%;
+}
+.image-content {
+  flex: 1 1 35%;
+  text-align: center;
+}
+
+/* ==== SIMULATOR FRAME ==== */
+.simulator-frame-wrapper iframe {
+  width: 100%;
+  height: 650px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+/* ==== TWO-COLUMN FINE TUNE ==== */
+.two-column {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.text-content {
+  flex: 1 1 60%;
+}
+
+.image-content {
+  flex: 1 1 35%;
+  text-align: center;
+}
+
+.illustration.top-img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin-bottom: 0;
+}
+
+/* ==== SECTION BACKGROUND ==== */
+#section1 {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 40px auto;
+  max-width: 1000px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+body.section1 {
+  background: url('../assets/images/6.gif') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* ==== IMAGE GENERAL STYLE ==== */
+.illustration {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* center aligned */
+}
+
+/* ==== RANK COLORS ==== */
+.rank-1 .rank-toggle {
+  background: #FFC611; 
+}
+.rank-2 .rank-toggle {
+  background: #FF6600; 
+}
+.rank-3 .rank-toggle {
+  background: #FF6600; 
+}
+.rank-4 .rank-toggle {
+  background: #FF6600; 
+}
+.rank-5 .rank-toggle {
+  background: #7E0000; 
+}
+.rank-6 .rank-toggle {
+  background: #7E0000;
+}
+
+
+
+
+
+
+
+
+
+
+/* ==== RANK COLORS (for flash card front side) ==== */
+.rank-1 .rank-front {
+  background: #FFC611;
+  color: #000; 
+}
+
+.rank-2 .rank-front,
+.rank-3 .rank-front,
+.rank-4 .rank-front {
+  background: #FF6600;
+  color: #fff;
+}
+
+.rank-5 .rank-front,
+.rank-6 .rank-front {
+  background: #7E0000;
+  color: #fff;
+}
+
+
+
+
+
+
+.rank-card {
+  width: 280px;
+  height: 360px;
+  perspective: 1000px;
+  margin: 20px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.rank-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+  cursor: pointer;
+}
+
+.rank-card:hover .rank-inner,
+.rank-card.flip .rank-inner {
+  transform: rotateY(180deg);
+}
+
+.rank-front, .rank-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.rank-front {
+  background: linear-gradient(135deg, #ff6600, #cc5200);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.rank-front h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.rank-back {
+  background: #fff;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+}
+
+.rank-img {
+  max-width: 180px;
+  margin: 0 auto 10px;
+  display: block;
+  border-radius: 8px;
+}
+
+
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 20px; /* spacing between cards */
+  margin-top: 30px;
+}
+
+<!-- 📚 References button -->
+<button id="refsBtn" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1000;
+">
+📚 References
+</button>
+
+
